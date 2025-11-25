@@ -32,4 +32,3 @@ A template for creating browser games with Next.js, Postgres, and Docker.
 ## Deployment
 
 This setup is ready to be deployed to any host that supports Docker or Next.js + Postgres.
-A modern framework for making browser games
