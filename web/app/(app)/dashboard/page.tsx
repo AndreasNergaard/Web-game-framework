@@ -22,6 +22,26 @@ export default async function DashboardPage() {
     take: 5,
   });
 
+  const otherUsers = await prisma.user.findMany({
+    where: {
+      id: { not: user.id },
+    },
+    select: {
+      id: true,
+      name: true,
+      level: true,
+      sessions: {
+        where: {
+          expiresAt: { gt: new Date() },
+        },
+        select: {
+          id: true,
+        },
+      },
+    },
+    take: 10,
+  });
+
   const xpProgress = getXpProgress(user.experience, user.level);
 
   function timeAgo(date: Date) {
@@ -146,18 +166,39 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        {/* Quick Actions */}
+        {/* Other Users */}
         <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
           <div className="border-b border-gray-200 dark:border-gray-700 px-6 py-4">
-            <h3 className="text-base font-semibold leading-6 text-gray-900 dark:text-gray-100">Quick Actions</h3>
+            <h3 className="text-base font-semibold leading-6 text-gray-900 dark:text-gray-100">Other Users</h3>
           </div>
-          <div className="p-6 grid grid-cols-2 gap-4">
-             <button className="flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
-               Start Adventure
-             </button>
-             <button className="flex items-center justify-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
-               View Inventory
-             </button>
+          <div className="p-6">
+            {otherUsers.length === 0 ? (
+              <p className="text-sm text-gray-500 dark:text-gray-400">No other users found.</p>
+            ) : (
+              <ul className="space-y-4">
+                {otherUsers.map((u: { id: string; name: string; level: number; sessions: { id: string }[] }) => {
+                  const isOnline = u.sessions.length > 0;
+                  return (
+                    <li key={u.id} className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={`h-2.5 w-2.5 rounded-full ${
+                            isOnline ? "bg-green-500" : "bg-gray-300 dark:bg-gray-600"
+                          }`}
+                          title={isOnline ? "Online" : "Offline"}
+                        />
+                        <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                          {u.name}
+                        </span>
+                      </div>
+                      <span className="text-sm text-gray-500 dark:text-gray-400">
+                        Lvl {u.level}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
           </div>
         </div>
       </div>
