@@ -10,6 +10,7 @@ A template for creating browser games with Next.js, Postgres, and Docker.
     docker compose up --build
     ```
 3.  **Access the app**: Open [http://localhost:3000](http://localhost:3000).
+4.  **Access the DB**:  Open [http://localhost:5555](http://localhost:5555). (May require port forwarding)
 
 ## Features
 
