@@ -28,3 +28,27 @@ body {
 button, [type='button'], [type='reset'], [type='submit'] {
   cursor: pointer;
 }
+
+/* Snow Effect */
+@keyframes snowfall {
+  0% {
+    transform: translateY(-10vh) translateX(-10px);
+  }
+  50% {
+    transform: translateY(45vh) translateX(10px);
+  }
+  100% {
+    transform: translateY(100vh) translateX(-10px);
+  }
+}
+
+.snowflake {
+  position: absolute;
+  top: -20px;
+  background-color: white;
+  border-radius: 50%;
+  pointer-events: none;
+  animation-name: snowfall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}

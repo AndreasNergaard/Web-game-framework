@@ -1,0 +1,39 @@
+model Mission {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  
+  xpReward    Int      @default(0)
+  moneyReward Int      @default(0)
+  cooldown    Int      @default(10) // Seconds
+  
+  rewards     MissionReward[]
+  userMissions UserMission[]
+
+  @@map("mission")
+}
+
+model MissionReward {
+  id        String @id @default(cuid())
+  missionId String
+  mission   Mission @relation(fields: [missionId], references: [id], onDelete: Cascade)
+  itemId    String
+  item      Item    @relation(fields: [itemId], references: [id])
+  quantity  Int     @default(1)
+
+  @@map("mission_reward")
+}
+
+model UserMission {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  missionId String
+  mission   Mission  @relation(fields: [missionId], references: [id], onDelete: Cascade)
+  
+  status    String   @default("AVAILABLE") // AVAILABLE, COMPLETED
+  completedAt DateTime?
+  
+  @@unique([userId, missionId])
+  @@map("user_mission")
+}

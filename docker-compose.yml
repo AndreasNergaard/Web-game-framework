@@ -16,6 +16,21 @@ services:
     depends_on:
       - db
 
+  studio:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    command: sh -c "apk add --no-cache socat && (npx prisma studio --port 5556 --browser none & socat TCP-LISTEN:5555,fork,bind=0.0.0.0 TCP:127.0.0.1:5556)"
+    ports:
+      - "5555:5555"
+    volumes:
+      - ./web:/app
+      - /app/node_modules
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@db:5432/gamedb
+    depends_on:
+      - db
+
   db:
     image: postgres:17-alpine
     environment:

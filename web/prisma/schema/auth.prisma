@@ -1,7 +1,6 @@
 model User {
   id            String    @id @default(cuid())
   email         String    @unique
-  password      String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   name          String
@@ -9,6 +8,12 @@ model User {
   image         String?
   sessions      Session[]
   accounts      Account[]
+  inventory     InventoryItem[]
+  missions      UserMission[]
+  activities    UserActivity[]
+  experience    Int       @default(0)
+  level         Int       @default(1)
+  money         Int       @default(0)
 
   @@map("user")
 }

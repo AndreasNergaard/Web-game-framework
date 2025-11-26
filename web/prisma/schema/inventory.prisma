@@ -1,0 +1,25 @@
+model Item {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  stackable   Boolean  @default(false)
+  maxStack    Int      @default(1)
+  icon        String?
+  
+  inventoryItems InventoryItem[]
+  missionRewards MissionReward[]
+
+  @@map("item")
+}
+
+model InventoryItem {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  itemId    String
+  item      Item     @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  quantity  Int      @default(1)
+  
+  @@index([userId])
+  @@map("inventory_item")
+}
