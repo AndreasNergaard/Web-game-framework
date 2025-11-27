@@ -2,7 +2,6 @@ import { getMissions } from "@/lib/missions";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { MissionList } from "@/components/MissionList";
-import { seedMissionsAction } from "@/app/actions/missions";
 
 export default async function MissionsPage() {
   const session = await auth.api.getSession({
@@ -24,11 +23,6 @@ export default async function MissionsPage() {
             Complete tasks to earn rewards and experience.
             </p>
         </div>
-        <form action={seedMissionsAction}>
-            <button className="text-sm text-blue-600 hover:text-blue-500 hover:underline">
-                Generate Demo Missions
-            </button>
-        </form>
       </div>
 
       <MissionList missions={missions} />

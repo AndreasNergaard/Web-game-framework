@@ -1,6 +1,6 @@
 "use server";
 
-import { completeMission, seedMissions } from "@/lib/missions";
+import { completeMission } from "@/lib/missions";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
@@ -18,7 +18,3 @@ export async function completeMissionAction(missionId: string) {
   revalidatePath("/missions");
 }
 
-export async function seedMissionsAction() {
-    await seedMissions();
-    revalidatePath("/missions");
-}

@@ -15,6 +15,7 @@ export default function Snow() {
       size: `${Math.random() * 4 + 2}px`,
       animationDelay: `${Math.random() * -15}s`, // Start at random positions
     }));
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setSnowflakes(newSnowflakes);
   }, []);
 

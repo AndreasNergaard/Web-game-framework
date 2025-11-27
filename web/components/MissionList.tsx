@@ -64,7 +64,6 @@ function MissionCard({ mission }: { mission: Mission }) {
   // If mission.status is AVAILABLE, it's available.
   
   const isServerCooldown = mission.status === 'COOLDOWN';
-  const isLocalReady = timeLeft !== null && timeLeft <= 0;
   
   // If we haven't calculated timeLeft yet (SSR/Hydration), trust the server status.
   // If we have calculated timeLeft, trust that.

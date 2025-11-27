@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
 
 export async function getInventory(userId: string) {
   return prisma.inventoryItem.findMany({
@@ -16,15 +17,15 @@ export async function createItem(data: { name: string; description?: string; sta
   return prisma.item.create({ data });
 }
 
-export async function addItemToInventory(userId: string, itemId: string, quantity: number = 1) {
-  const item = await prisma.item.findUnique({ where: { id: itemId } });
+export async function addItemToInventory(userId: string, itemId: string, quantity: number = 1, tx: Prisma.TransactionClient = prisma) {
+  const item = await tx.item.findUnique({ where: { id: itemId } });
   if (!item) throw new Error("Item not found");
 
   let remainingQuantity = quantity;
 
   if (item.stackable) {
     // Find existing stacks that are not full
-    const existingStacks = await prisma.inventoryItem.findMany({
+    const existingStacks = await tx.inventoryItem.findMany({
       where: { userId, itemId, quantity: { lt: item.maxStack } },
       orderBy: { quantity: 'desc' }
     });
@@ -35,7 +36,7 @@ export async function addItemToInventory(userId: string, itemId: string, quantit
       const space = item.maxStack - stack.quantity;
       const toAdd = Math.min(remainingQuantity, space);
       
-      await prisma.inventoryItem.update({
+      await tx.inventoryItem.update({
         where: { id: stack.id },
         data: { quantity: stack.quantity + toAdd },
       });
@@ -49,7 +50,7 @@ export async function addItemToInventory(userId: string, itemId: string, quantit
   while (remainingQuantity > 0) {
     const toAdd = item.stackable ? Math.min(remainingQuantity, item.maxStack) : 1;
     
-    await prisma.inventoryItem.create({
+    await tx.inventoryItem.create({
       data: {
         userId,
         itemId,

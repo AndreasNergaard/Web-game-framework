@@ -150,7 +150,7 @@ export default async function DashboardPage() {
               <p className="text-sm text-gray-500 dark:text-gray-400">No recent activity.</p>
             ) : (
               <ul className="space-y-4">
-                {activities.map((activity: any) => (
+                {activities.map((activity) => (
                   <li key={activity.id} className="flex gap-4">
                     <div className="relative mt-1 flex h-2 w-2 flex-none items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700">
                       <div className="h-1.5 w-1.5 rounded-full bg-blue-400 dark:bg-blue-500 ring-1 ring-white dark:ring-gray-900" />

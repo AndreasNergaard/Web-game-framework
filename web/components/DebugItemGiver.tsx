@@ -25,7 +25,7 @@ export function DebugItemGiver({ items }: { items: Item[] }) {
           </button>
         </div>
       ))}
-      {items.length === 0 && <div className="col-span-full text-gray-500">No items found in database. Click "Seed Default Items" above.</div>}
+      {items.length === 0 && <div className="col-span-full text-gray-500">No items found in database.</div>}
     </div>
   );
 }

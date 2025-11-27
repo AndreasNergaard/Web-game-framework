@@ -4,7 +4,6 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { InventoryList } from "@/components/InventoryList";
 import { DebugItemGiver } from "@/components/DebugItemGiver";
-import { seedItemsAction } from "@/app/actions/inventory";
 
 export default async function InventoryPage() {
   const session = await auth.api.getSession({
@@ -32,11 +31,6 @@ export default async function InventoryPage() {
       <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
         <div className="flex items-center justify-between mb-6">
             <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">Debug: Item Spawner</h2>
-            <form action={seedItemsAction}>
-                <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm transition-colors">
-                    Seed Default Items
-                </button>
-            </form>
         </div>
         <DebugItemGiver items={allItems} />
       </div>

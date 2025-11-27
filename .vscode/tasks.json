@@ -10,6 +10,16 @@
         "reveal": "always",
         "panel": "new"
       }
+    },
+    {
+      "label": "Validate (Lint & Type Check)",
+      "type": "shell",
+      "command": "npm run validate",
+      "options": {
+        "cwd": "${workspaceFolder}/web"
+      },
+      "group": "test",
+      "problemMatcher": ["$eslint-stylish", "$tsc"]
     }
   ]
 }
